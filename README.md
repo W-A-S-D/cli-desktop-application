@@ -1,1 +1,1 @@
-# cli-desktop-application
+# desktop-application
