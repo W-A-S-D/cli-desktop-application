@@ -4,6 +4,8 @@ import br.com.wasd.wasd.prototipo.java.model.Usuario;
 import br.com.wasd.wasd.prototipo.java.model.dao.UsuarioDAO;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginCli {
 
@@ -14,18 +16,60 @@ public class LoginCli {
 
         String login;
         String senha;
-
+        System.out.println("                                                       \n"
+                + "                                                       \n"
+                + "           .---.   ,---,       .--.--.       ,---,     \n"
+                + "          /. ./|  '  .' \\     /  /    '.   .'  .' `\\   \n"
+                + "      .--'.  ' ; /  ;    '.  |  :  /`. / ,---.'     \\  \n"
+                + "     /__./ \\ : |:  :       \\ ;  |  |--`  |   |  .`\\  | \n"
+                + " .--'.  '   \\' .:  |   /\\   \\|  :  ;_    :   : |  '  | \n"
+                + "/___/ \\ |    ' '|  :  ' ;.   :\\  \\    `. |   ' '  ;  : \n"
+                + ";   \\  \\;      :|  |  ;/  \\   \\`----.   \\'   | ;  .  | \n"
+                + " \\   ;  `      |'  :  | \\  \\ ,'__ \\  \\  ||   | :  |  ' \n"
+                + "  .   \\    .\\  ;|  |  '  '--' /  /`--'  /'   : | /  ;  \n"
+                + "   \\   \\   ' \\ ||  :  :      '--'.     / |   | '` ,/   \n"
+                + "    :   '  |--\" |  | ,'        `--'---'  ;   :  .'     \n"
+                + "     \\   \\ ;    `--''                    |   ,.'       \n"
+                + "      '---\"                              '---'         \n"
+                + "                                                       ");
         System.out.println("Bem vindo ao WASD! \nfaça seu login:");
         login = leitor.next();
         System.out.println("Digite a sua senha");
         senha = leitor.next();
         usuario = dao.login(login, senha);
         
+        LoginCli load = new LoginCli();
+        load.teste(1);
         if (usuario != null) {
             System.out.println("Bem vindo");
             new DesktopCli();
-        }else{
+        } else {
             System.out.println("Senha ou Usuario Incorreto");
+            load.teste(0);
         }
+
+    }
+
+    public void teste(Integer l) {        
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    for (int i = 0; l != 0; i++) {
+
+                        System.out.print('[' + i);
+                        Thread.sleep(100);
+                        System.out.print('\b');
+                        Thread.sleep(100);
+                        System.out.print('[' + i);
+
+                    }
+                    System.out.println("\n");
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LoginCli.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }).start();
     }
 }

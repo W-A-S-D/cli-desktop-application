@@ -11,7 +11,7 @@ public class MysqlConnection {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/wasd?useLegacyDatetimeCode=false&serverTimezone=America/New_York");
         dataSource.setUsername("root");
-        dataSource.setPassword("digitalschool");
+        dataSource.setPassword("Urubu100");
     }
 
     public BasicDataSource getDataSource() {

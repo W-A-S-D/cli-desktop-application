@@ -55,7 +55,7 @@ public class DesktopCli {
     }
 
     public void getHardware() throws UnknownHostException {
-
+        
         String so, cpu, gpuNome = "Sem GPU no sistema";
         Long ram = 0L;
 
@@ -93,6 +93,9 @@ public class DesktopCli {
         maquina = new Maquina(hostname, so, cpu, ConversorDouble.formatarBytes(ram), gpuNome, "pendente");
 
         maquinaDao.insert(maquina);
+        LoginCli load = new LoginCli();
+        load.teste(0);
+        
     }
 
     public void getHardwareUse() throws InterruptedException {
