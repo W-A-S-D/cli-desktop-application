@@ -94,7 +94,7 @@ public class DesktopCli {
 
         maquinaDao.insert(maquina);
         LoginCli load = new LoginCli();
-        load.teste(0);
+        load.teste(false);
         
     }
 
