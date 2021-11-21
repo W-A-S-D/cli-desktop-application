@@ -9,7 +9,10 @@ import java.util.logging.Logger;
 
 public class LoginCli {
 
+    private static final StringBuilder sb = new StringBuilder();
+
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
+
         Scanner leitor = new Scanner(System.in);
         Usuario usuario;
         UsuarioDAO dao = new UsuarioDAO();
@@ -53,30 +56,19 @@ public class LoginCli {
     public void teste(Boolean l) {
         new Thread(new Runnable() {
             public void run() {
-
-                String a = "'🕛'🕧'🕐'🕜'🕑'🕝'🕒'🕞'🕓'🕟'🕔'🕠'🕕'🕖'🕗'🕘'🕙'🕚'🕡'🕢'🕣'🕤'🕥'🕦'\\";
-                System.out.print("\033[2J");   // hide the cursor
-                long start = System.currentTimeMillis();
-                while (l) {
-                    for (int i = 0; i < 4; i++) {
-                        System.out.print("\033[2J");     // clear terminal
-                        System.out.print("\033[0;0H");   // place cursor at top left corner
-                        for (int j = 0; j < 80; j++) {   // 80 character terminal width, say
-                            System.out.print(a.charAt(i));
-                        }
-                        try {
-                            Thread.sleep(250);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(LoginCli.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                for (int i = 0; i <= 100; i++) {
+                    sb.setLength(0);
+                    for (int j = 0; j < i; j++) {
+                        sb.append("█");
                     }
-                    long now = System.currentTimeMillis();
-                    // stop after 20 seconds, say
-                    if (now - start >= 20000) {
-                        break;
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(LoginCli.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    System.out.print("[" + String.format("%-100s", sb.toString()) + "] " + i + "%");
+                    System.out.print("\r");
                 }
-                System.out.print("\033[?25h"); // restore the cursor
             }
         }
         ).start();
