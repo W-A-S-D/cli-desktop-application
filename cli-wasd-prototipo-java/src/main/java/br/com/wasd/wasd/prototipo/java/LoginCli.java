@@ -56,11 +56,9 @@ public class LoginCli {
                 try {
                     for (int i = 0; l != 0; i++) {
 
-                        System.out.print('[' + i);
-                        Thread.sleep(100);
-                        System.out.print('\b');
-                        Thread.sleep(100);
-                        System.out.print('[' + i);
+                        System.out.print('.');
+                        Thread.sleep(1000);
+                        System.out.print('.');
 
                     }
                     System.out.println("\n");
