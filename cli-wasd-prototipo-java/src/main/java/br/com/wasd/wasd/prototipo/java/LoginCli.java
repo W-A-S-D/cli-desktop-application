@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import me.tongfei.progressbar.ProgressBar;
 
 public class LoginCli {
 
@@ -42,35 +43,23 @@ public class LoginCli {
         usuario = dao.login(login, senha);
 
         LoginCli load = new LoginCli();
-        load.teste(true);
-        if (usuario != null) {
-            System.out.println("Bem vindo");
-            new DesktopCli();
-        } else {
-            System.out.println("Senha ou Usuario Incorreto");
-            load.teste(false);
-        }
+        try ( ProgressBar pb = new ProgressBar("Test", 100)) { // name, initial max
+            // Use ProgressBar("Test", 100, ProgressBarStyle.ASCII) if you want ASCII output style
+            pb.step(); // step by 1
+            pb.setExtraMessage("Reading..."); // Set extra message to display at the end of the bar
 
-    }
+            if (usuario != null) {
+                
+                System.out.println("Bem vindo");
+                pb.stepBy(30); // step by n
+                new DesktopCli(pb);
+            } else {
+                System.out.println("Senha ou Usuario Incorreto");
 
-    public void teste(Boolean l) {
-        new Thread(new Runnable() {
-            public void run() {
-                for (int i = 0; i <= 100; i++) {
-                    sb.setLength(0);
-                    for (int j = 0; j < i; j++) {
-                        sb.append("█");
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(LoginCli.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    System.out.print("[" + String.format("%-100s", sb.toString()) + "] " + i + "%");
-                    System.out.print("\r");
-                }
             }
+
         }
-        ).start();
-    }
+
+    } // progress bar stops automatically after completion of try-with-resource block
+
 }

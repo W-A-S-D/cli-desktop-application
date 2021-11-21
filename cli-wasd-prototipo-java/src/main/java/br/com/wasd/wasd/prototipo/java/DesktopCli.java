@@ -30,6 +30,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import me.tongfei.progressbar.ProgressBar;
 
 public class DesktopCli {
 
@@ -42,7 +43,7 @@ public class DesktopCli {
     private Maquina maquina;
     private ProcessosGroup grupoDeProcessos;
 
-    public DesktopCli() throws UnknownHostException, InterruptedException {
+    public DesktopCli(ProgressBar pb) throws UnknownHostException, InterruptedException {
         looca = new Looca();
         grupoDeProcessos = looca.getGrupoDeProcessos();
         sistema = looca.getSistema();
@@ -50,13 +51,14 @@ public class DesktopCli {
         processador = looca.getProcessador();
         grupoDeDiscos = looca.getGrupoDeDiscos();
         componentes = JSensors.get.components();
-        getHardware();
+        getHardware(pb);
         getHardwareUse();
     }
 
-    public void getHardware() throws UnknownHostException {
-        LoginCli load = new LoginCli();
-        load.teste(false);
+    public void getHardware(ProgressBar pb) throws UnknownHostException {
+
+        pb.setExtraMessage("Coletando dados do sistema");
+        pb.stepTo(50); // step directly to n
         String so, cpu, gpuNome = "Sem GPU no sistema";
         Long ram = 0L;
 
@@ -69,7 +71,9 @@ public class DesktopCli {
 
         MaquinaDao maquinaDao = new MaquinaDao();
         DiscoDao discoDao = new DiscoDao();
+        pb.stepTo(70); // step directly to n
 
+        pb.setExtraMessage("Criando lista de discos e GPUS");
         so = sistema.getSistemaOperacional();
         cpu = processador.getNome();
         ram = memoria.getTotal();
@@ -79,12 +83,16 @@ public class DesktopCli {
             discoDao.insert(discoMaquina);
         }
 
+        pb.setExtraMessage("Verificando tamanho do disco");
+        pb.stepTo(80); // step directly to n
         if (gpus != null) {
             for (final Gpu gpu : gpus) {
                 gpuNome = gpu.name;
             }
         }
 
+        pb.setExtraMessage("Exibindo dados");
+        pb.maxHint(100);
         System.out.println(gpuNome);
         System.out.println(cpu);
         System.out.println(Conversor.formatarBytes(ram));
