@@ -54,7 +54,7 @@ public class LoginCli {
         new Thread(new Runnable() {
             public void run() {
 
-                String a = "|/-\\";
+                String a = "'🕛'🕧'🕐'🕜'🕑'🕝'🕒'🕞'🕓'🕟'🕔'🕠'🕕'🕖'🕗'🕘'🕙'🕚'🕡'🕢'🕣'🕤'🕥'🕦'\\";
                 System.out.print("\033[2J");   // hide the cursor
                 long start = System.currentTimeMillis();
                 while (l) {
