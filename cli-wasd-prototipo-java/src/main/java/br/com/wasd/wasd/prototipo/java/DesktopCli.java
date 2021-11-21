@@ -4,6 +4,7 @@ import br.com.wasd.wasd.prototipo.java.ConversorDouble;
 import br.com.wasd.wasd.prototipo.java.enums.TemperaturaAlerta;
 import br.com.wasd.wasd.prototipo.java.model.DiscoMaquina;
 import br.com.wasd.wasd.prototipo.java.model.Log;
+import br.com.wasd.wasd.prototipo.java.model.LogDisco;
 import br.com.wasd.wasd.prototipo.java.model.Maquina;
 import br.com.wasd.wasd.prototipo.java.model.dao.DiscoDao;
 import br.com.wasd.wasd.prototipo.java.model.dao.LogDao;
@@ -140,7 +141,7 @@ public class DesktopCli {
             
             LogDisco logDisco;
             logDisco = new LogDisco(1, 1, ConversorDouble.formatarBytes(volume.getDisponivel()));
-            logDiscoDao.insert(logDisco);
+            //logDiscoDao.insert(logDisco);
         }
 
         //UPDATE DO STATUS
