@@ -101,20 +101,7 @@ public class DesktopCli {
         Long usoRam, usoDisco = 0L;
         Double usoCpu, temperaturaGpu = 0.0;
 
-        //Dados da api looca        
-        Looca looca = new Looca();
-
-        ProcessosGroup grupoDeProcessos = looca.getGrupoDeProcessos();
-        List<Processo> processos = grupoDeProcessos.getProcessos();
-
-        Processador processador = looca.getProcessador();
-        Memoria memoria = looca.getMemoria();
-
-        DiscosGroup grupoDeDiscos = looca.getGrupoDeDiscos();
         List<Volume> discoVolume = grupoDeDiscos.getVolumes();
-
-        // Dados da GPU - Jsensors
-        Components componentes = JSensors.get.components();
         List<Gpu> gpus = componentes.gpus;
 
         //Classe para inserção de dados
@@ -142,6 +129,10 @@ public class DesktopCli {
         for (Volume volume : discoVolume) {
             usoDisco = volume.getDisponivel();
             System.out.println("Volume do disco: " + Conversor.formatarBytes(volume.getDisponivel()));
+            
+            LogDisco logDisco;
+            logDisco = new LogDisco(1, 1, ConversorDouble.formatarBytes(volume.getDisponivel()));
+            logDiscoDao.insert(logDisco);
         }
 
         //UPDATE DO STATUS
