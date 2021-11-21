@@ -34,7 +34,7 @@ public class MaquinaDao extends DAOConnection implements DAO {
     @Override
     public void insert(Object object) {
        String sql = "insert into maquina(fk_setor, nome, so, cpu, ram, gpu, status) "
-                + "values (2, ?, ?, ?, ?, ?, 'Ok')";
+                + "values (1, ?, ?, ?, ?, ?, 'Ok')";
        Maquina maquina = (Maquina)object;
 
        jdbcTemplate.update(sql, maquina.getNome(), maquina.getSo(), maquina.getCpu(), maquina.getRam(), maquina.getGpu());

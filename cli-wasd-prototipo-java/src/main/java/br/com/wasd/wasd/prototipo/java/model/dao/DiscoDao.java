@@ -25,7 +25,7 @@ public class DiscoDao extends DAOConnection implements DAO{
 
     @Override
     public void insert(Object object) {
-        String sql = "insert into disco(fk_maquina, nome, volume) values (3, ?, ?)";
+        String sql = "insert into disco(fk_maquina, nome, volume) values (1, ?, ?)";
         DiscoMaquina disco = (DiscoMaquina)object;
         jdbcTemplate.update(sql, disco.getNome_disco(), disco.getVolume_disco());
 

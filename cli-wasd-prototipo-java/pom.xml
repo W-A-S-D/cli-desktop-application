@@ -40,6 +40,12 @@
             <version>7.2.2.jre11</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.20</version>
+        </dependency>
+        
     </dependencies>
+    <name>cli-wasd-prototipo-java</name>
 </project>
