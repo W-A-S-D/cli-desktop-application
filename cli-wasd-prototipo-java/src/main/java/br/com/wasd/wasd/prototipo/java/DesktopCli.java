@@ -25,11 +25,16 @@ import com.profesorfalken.jsensors.JSensors;
 import com.profesorfalken.jsensors.model.components.Components;
 import com.profesorfalken.jsensors.model.components.Gpu;
 import com.profesorfalken.jsensors.model.sensors.Temperature;
+import java.awt.Desktop;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import me.tongfei.progressbar.ProgressBar;
 
@@ -53,13 +58,21 @@ public class DesktopCli {
         grupoDeDiscos = looca.getGrupoDeDiscos();
         componentes = JSensors.get.components();
         getHardware(pb);
-        getHardwareUse();
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                try {
+                    getHardwareUse();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Desktop.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }, 0, 30000);
     }
 
     public void getHardware(ProgressBar pb) throws UnknownHostException {
-
         pb.setExtraMessage("Coletando dados do sistema");
         pb.stepTo(50); // step directly to n
+        System.out.println("Componentes da Máquina:");
         String so, cpu, gpuNome = "Sem GPU no sistema";
         Long ram = 0L;
 
@@ -94,11 +107,11 @@ public class DesktopCli {
 
         pb.setExtraMessage("Exibindo dados");
         pb.maxHint(100);
-        System.out.println(gpuNome);
-        System.out.println(cpu);
-        System.out.println(Conversor.formatarBytes(ram));
-        System.out.println(so);
-        System.out.println(hostname);
+        System.out.println("Nome da GPU: " + gpuNome);
+        System.out.println("Nome do Processador: " + cpu);
+        System.out.println("Tamanho de Memoria RAM: " + Conversor.formatarBytes(ram));
+        System.out.println("Sistema Operacional: " + so);
+        System.out.println("Nome da maquina: " + hostname);
 
         maquina = new Maquina(hostname, so, cpu, ConversorDouble.formatarBytes(ram), gpuNome, "pendente");
 
@@ -138,7 +151,7 @@ public class DesktopCli {
         for (Volume volume : discoVolume) {
             usoDisco = volume.getDisponivel();
             System.out.println("Volume do disco: " + Conversor.formatarBytes(volume.getDisponivel()));
-            
+
             LogDisco logDisco;
             logDisco = new LogDisco(1, 1, ConversorDouble.formatarBytes(volume.getDisponivel()));
             //logDiscoDao.insert(logDisco);
@@ -154,8 +167,6 @@ public class DesktopCli {
 
         Log log = new Log(1, usoCpu, ConversorDouble.formatarBytes(usoRam), ConversorDouble.formatarBytes(usoDisco), temperaturaGpu);
         logDao.insert(log);
-
-        // LEMBRAR DE FAZER O LOOPING
     }
 
     public void getProccess() {
