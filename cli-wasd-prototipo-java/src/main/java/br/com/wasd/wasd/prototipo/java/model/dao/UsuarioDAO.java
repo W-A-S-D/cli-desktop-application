@@ -12,7 +12,7 @@ public class UsuarioDAO extends DAOConnection implements DAO {
 
     public Usuario login(String email, String senha) {
 
-        String sql = "select * from USUARIO where email =? and senha=?";
+        String sql = "select * from usuario where email =? and senha=?";
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{email, senha}, new UsuarioMapper());
 
