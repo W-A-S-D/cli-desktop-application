@@ -12,24 +12,15 @@ public class Maquina {
     private String status;
 
     public Maquina(){}
-        
-    public Maquina(Integer maquina_id, String nome, String so, String cpu, Double ram, String gpu, String status) {
-        this.maquina_id = maquina_id;
+    
+    
+    public Maquina(Integer fk_setor, String nome, String so, String cpu, Double ram, String gpu, String status ){
+        this.fk_setor = fk_setor;
         this.nome = nome;
         this.so = so;
         this.cpu = cpu;
         this.ram = ram;
-        this.gpu = "";
-        this.status = status;
-    }
-
-  
-    public Maquina(Integer maquina_id, String nome, String so, String cpu, Double ram, String status) {
-        this.maquina_id = maquina_id;
-        this.nome = nome;
-        this.so = so;
-        this.cpu = cpu;
-        this.ram = ram;
+        this.gpu = gpu;
         this.status = status;
     }
 

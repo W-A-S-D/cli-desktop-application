@@ -28,4 +28,10 @@ public class LogDiscoDAO extends DAOConnection implements DAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public List findAllBy(String param) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

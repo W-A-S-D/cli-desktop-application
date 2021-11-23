@@ -68,7 +68,12 @@ public class ProcessosDao extends DAOConnection implements DAO {
         Processo processo = (Processo) object;
         jdbcTemplate.update(sql, processo.getUsoCpu(), processo.getUsoMemoria(), sqlDate ,processo.getNome());
 
-        System.out.println("Processos atualizado com sucesso!");
+    }
+
+    @Override
+    public List findAllBy(String param) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

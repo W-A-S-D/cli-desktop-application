@@ -22,8 +22,8 @@ public class DiscoMapper implements RowMapper<DiscoMaquina> {
 
         disco.setDisco_id(rs.getInt("disco_id"));
         disco.setMaquina_id(rs.getInt("fk_maquina"));
-        disco.setNome_disco(rs.getString("nome_disco"));
-        disco.setVolume_disco(rs.getDouble("volume_disco"));
+        disco.setNome_disco(rs.getString("nome"));
+        disco.setVolume_disco(rs.getDouble("volume"));
         
         return disco;
     }   

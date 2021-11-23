@@ -32,7 +32,7 @@ public class PedidoDao extends DAOConnection implements DAO {
         String sql = "insert into pedido(hostname, status, fk_usuario) values ( ?, ?, ?)";
         Pedido pedido = (Pedido) object;
 
-        jdbcTemplate.update(sql, pedido.getHostname(), pedido.getStatus(), pedido.getFk_usuario());
+        jdbcTemplate.update(sql, pedido.getHostname(), 0 , pedido.getFk_usuario());
 
         System.out.println("pedido inserido com sucesso");
     }
@@ -44,6 +44,12 @@ public class PedidoDao extends DAOConnection implements DAO {
         jdbcTemplate.update(sql, pedido.getStatus(), pedido.getHostname());
         
         System.out.println("pedido atualizado com sucesso!");
+    }
+
+    @Override
+    public List findAllBy(String param) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

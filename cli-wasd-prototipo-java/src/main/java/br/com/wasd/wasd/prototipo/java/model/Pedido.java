@@ -14,6 +14,11 @@ public class Pedido {
     public Pedido() {
     }
 
+    public Pedido(String hostname, Integer fk_usuario){
+        this.hostname = hostname;
+        this.fk_usuario = fk_usuario;
+    }
+
     public Pedido(String hostname, Integer status, Integer fk_usuario) {
         this.hostname = hostname;
         this.status = status;

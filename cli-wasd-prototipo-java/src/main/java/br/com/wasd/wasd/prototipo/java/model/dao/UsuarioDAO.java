@@ -12,7 +12,7 @@ public class UsuarioDAO extends DAOConnection implements DAO {
 
     public Usuario login(String email, String senha) {
 
-        String sql = "select * from usuario where email =? and senha=?";
+        String sql = "select * from USUARIO where email =? and senha=?";
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{email, senha}, new UsuarioMapper());
 
@@ -39,6 +39,12 @@ public class UsuarioDAO extends DAOConnection implements DAO {
     @Override
     public void update(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List findAllBy(String param) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
