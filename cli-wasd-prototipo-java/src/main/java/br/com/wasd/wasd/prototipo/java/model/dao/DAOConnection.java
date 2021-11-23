@@ -15,6 +15,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
  */
 public class DAOConnection {
     
-    protected Connection config = new Connection();
+    protected MysqlConnection config = new MysqlConnection();
     protected JdbcTemplate jdbcTemplate = new JdbcTemplate(config.getDataSource());
 }
