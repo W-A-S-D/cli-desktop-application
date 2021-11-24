@@ -40,6 +40,7 @@ import me.tongfei.progressbar.ProgressBar;
 
 public class DesktopCli {
 
+    private SlackMessage slack;
     private Looca looca;
     private Sistema sistema;
     private Memoria memoria;
@@ -64,12 +65,14 @@ public class DesktopCli {
         maquinaDao = new MaquinaDao();
         maquina = (Maquina) maquinaDao.findOne(hostname);
         this.idUser = idUser;
+        slack = new SlackMessage();
 
         getHardware(pb);
         new Timer().scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 try {
                     getHardwareUse();
+                    slack.sendMessageToSlackPedidoURL(hostname);
                 } catch (InterruptedException ex) {
                     //Logger.getLogger(Desktop.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -109,7 +112,9 @@ public class DesktopCli {
         System.out.println("Nome do Processador: " + cpu);
         System.out.println("Tamanho de Memoria RAM: " + Conversor.formatarBytes(ram));
         System.out.println("Sistema Operacional: " + so);
+
         System.out.println("Nome da maquina: " + hostname);
+        slack.sendMessageToSlackHostnameURL(hostname);
 
         if (maquina == null) {
             SetorDAO setorDao = new SetorDAO();
@@ -122,6 +127,7 @@ public class DesktopCli {
                         gpuNome, "pendente");
                 Integer insertedMachine = maquinaDao.keyInsert(maquina);
                 maquina.setMaquina_id(insertedMachine);
+                slack.sendMessageToSlackPedidoURL(hostname + "pedindo acesso");
 
                 for (Disco d : disco) {
                     DiscoMaquina discoMaquina = new DiscoMaquina(insertedMachine, d.getNome(),
@@ -159,6 +165,8 @@ public class DesktopCli {
                     for (final Temperature temp : temps) {
                         System.out.println("Temperatura gpu: " + temp.name + ": " + temp.value + " C");
                         temperaturaGpu = temp.value;
+                        slack.sendMessageToSlackAlertaURL("Temperatura da GPU: " + temp.value.toString()+"C");
+
                         //lblTempGpu.setText(temp.value + " C");
                     }
                 }
