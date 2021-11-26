@@ -81,6 +81,54 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.27</version>
         </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.github.seratch/jslack -->
+        <dependency>
+            <groupId>com.github.seratch</groupId>
+            <artifactId>jslack</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.slack.api</groupId>
+            <artifactId>slack-api-model</artifactId>
+            <version>1.13.0</version>
+        </dependency>
+        
+        
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-jdk14 -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>2.0.0-alpha0</version>
+            <scope>runtime</scope>
+        </dependency> 
+        
+        <dependency>
+            <groupId>com.github.britooo</groupId>
+            <artifactId>looca-api</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>2.2.0</version>
+        </dependency>
 
 
     </dependencies>

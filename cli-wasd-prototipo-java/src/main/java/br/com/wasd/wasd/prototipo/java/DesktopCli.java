@@ -51,6 +51,7 @@ public class DesktopCli {
     private String hostname;
     private Integer idUser;
     MaquinaDao maquinaDao;
+    private SlackWebhook slack;
 
     public DesktopCli(ProgressBar pb, Integer idUser) throws UnknownHostException, InterruptedException {
         looca = new Looca();
@@ -63,9 +64,12 @@ public class DesktopCli {
         hostname = InetAddress.getLocalHost().getHostName();
         maquinaDao = new MaquinaDao();
         maquina = (Maquina) maquinaDao.findOne(hostname);
+        slack = new SlackWebhook();
         this.idUser = idUser;
 
         getHardware(pb);
+        slack.sendMessageToSlackPedidoURL(hostname + " Pedindo Acesso!");  // SLACK AQUI !
+
         new Timer().scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 try {
@@ -128,6 +132,8 @@ public class DesktopCli {
                             ConversorDouble.formatarBytes(d.getTamanho()));
                     discoDao.insert(discoMaquina);
                 }
+                slack.sendMessageToSlackHostnameURL(hostname + " Maquina Cadastrada!!!");  // SLACK AQUI !
+
             } else {
                 // log
                 System.out.println("Setor não encontrado para inserir maquina!");
@@ -159,6 +165,13 @@ public class DesktopCli {
                     for (final Temperature temp : temps) {
                         System.out.println("Temperatura gpu: " + temp.name + ": " + temp.value + " C");
                         temperaturaGpu = temp.value;
+                        if (temp.value > 80) {
+                            slack.sendMessageToSlackAlertaURL("Alerta!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                        } else if (temp.value > 55) {
+                            slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                        } else {
+                            //slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
+                        }
                         //lblTempGpu.setText(temp.value + " C");
                     }
                 }
