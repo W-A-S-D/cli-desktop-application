@@ -57,10 +57,7 @@ public class LoginCli {
         System.out.println("Digite a sua Senha");
         senha = leitor.next();
 
-        System.out.println("TESTE ENCRYPT: " + bcrypt.hashPassword(senha));
-        usuario = dao.login(login, bcrypt.hashPassword(senha));
-        System.out.println("TESTE ENCRYPT: " + bcrypt.hashPassword(senha));
-
+        usuario = dao.login(login, senha);
         //pedido = (Pedido) pedidoDao.findOne(hostname);
         LoginCli load = new LoginCli();
         try (ProgressBar pb = new ProgressBar("Test", 100)) { // name, initial max

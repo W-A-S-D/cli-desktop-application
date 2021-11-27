@@ -68,7 +68,7 @@ public class DesktopCli {
         this.idUser = idUser;
 
         getHardware(pb);
-        slack.sendMessageToSlackPedidoURL(hostname + " Pedindo Acesso!");  // SLACK AQUI !
+        //slack.sendMessageToSlackPedidoURL(hostname + " Pedindo Acesso!");  // SLACK AQUI !  
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -170,7 +170,7 @@ public class DesktopCli {
                         } else if (temp.value > 55) {
                             slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
                         } else {
-                            //slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
+                            slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
                         }
                         //lblTempGpu.setText(temp.value + " C");
                     }
