@@ -22,16 +22,18 @@ public class LoginCli {
     public LoginCli() throws UnknownHostException {
         pedidoDao = new PedidoDao();
         hostname = InetAddress.getLocalHost().getHostName();
+
     }
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         String login, senha;
         Scanner leitor = new Scanner(System.in);
-
         Usuario usuario;
         Pedido pedido;
         UsuarioDAO dao = new UsuarioDAO();
         MaquinaDao maquinaDao = new MaquinaDao();
+        Bcrypt bcrypt = new Bcrypt();
+
         System.out.println("                                                       \n"
                 + "                                                       \n"
                 + "           .---.   ,---,       .--.--.       ,---,     \n"
@@ -55,7 +57,10 @@ public class LoginCli {
         System.out.println("Digite a sua Senha");
         senha = leitor.next();
 
-        usuario = dao.login(login, senha);
+        System.out.println("TESTE ENCRYPT: " + bcrypt.hashPassword(senha));
+        usuario = dao.login(login, bcrypt.hashPassword(senha));
+        System.out.println("TESTE ENCRYPT: " + bcrypt.hashPassword(senha));
+
         //pedido = (Pedido) pedidoDao.findOne(hostname);
         LoginCli load = new LoginCli();
         try (ProgressBar pb = new ProgressBar("Test", 100)) { // name, initial max
