@@ -1,2 +1,4 @@
 /wasd-prototipo-java/target/
 /cli-wasd-prototipo-java/target/
+
+/cli-wasd-prototipo-java/src/main/java/br/com/wasd/wasd/prototipo/java/SlackWebhook.java

@@ -215,7 +215,6 @@ public class DesktopCli {
                     logDiscoDao.insert(logDisco);
                 }
             }
-
         } else {
             // log
         }

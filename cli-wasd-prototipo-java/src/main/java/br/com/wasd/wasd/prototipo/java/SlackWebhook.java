@@ -9,12 +9,11 @@ import com.github.seratch.jslack.api.webhook.WebhookResponse;
 
 public class SlackWebhook {
 
-    private static String HostnameURL = "";
-    private static String PedidoURL = "";
-    private static String AlertaURL = "";
-
+    private static String HostnameURL = "https://hooks.slack.com/services/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";
+    private static String PedidoURL = "https://hooks.slack.com/services/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";
+    private static String AlertaURL = "https://hooks.slack.com/services/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";
     private static String slackChannel = "";
-
+    
     public static void sendMessageToSlackHostnameURL(String message) {
         try {
             StringBuilder msgbuilder = new StringBuilder();
