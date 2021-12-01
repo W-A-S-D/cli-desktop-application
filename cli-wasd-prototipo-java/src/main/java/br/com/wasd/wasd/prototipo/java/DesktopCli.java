@@ -132,7 +132,7 @@ public class DesktopCli {
                             ConversorDouble.formatarBytes(d.getTamanho()));
                     discoDao.insert(discoMaquina);
                 }
-                slack.sendMessageToSlackHostnameURL(hostname + " Maquina Cadastrada!!!");  // SLACK AQUI !
+                // slack.sendMessageToSlackHostnameURL(hostname + " Maquina Cadastrada!!!");  // SLACK AQUI !
 
             } else {
                 // log
@@ -166,11 +166,11 @@ public class DesktopCli {
                         System.out.println("Temperatura gpu: " + temp.name + ": " + temp.value + " C");
                         temperaturaGpu = temp.value;
                         if (temp.value > 80) {
-                            slack.sendMessageToSlackAlertaURL("Alerta!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                            //slack.sendMessageToSlackAlertaURL("Alerta!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
                         } else if (temp.value > 55) {
-                            slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                            //slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
                         } else {
-                            slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
+                            //slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
                         }
                         //lblTempGpu.setText(temp.value + " C");
                     }
