@@ -9,9 +9,9 @@ public class MysqlConnection {
     public MysqlConnection() {
         dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://mysql:3306/wasd?autoReconnect=true&useSSL=false&useLegacyDatetimeCode=false&allowPublicRetrieval=true");
+        dataSource.setUrl("jdbc:mysql://mysql:3306/wasd?autoReconnect=true&useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true");
         dataSource.setUsername("root");
-        dataSource.setPassword("my");
+        dataSource.setPassword("urubu100");
     }
 
     public BasicDataSource getDataSource() {

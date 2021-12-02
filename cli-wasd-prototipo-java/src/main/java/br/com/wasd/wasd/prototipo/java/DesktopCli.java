@@ -51,7 +51,7 @@ public class DesktopCli {
     private String hostname;
     private Integer idUser;
     MaquinaDao maquinaDao;
-    private SlackWebhook slack;
+    //private SlackWebhook slack;
 
     public DesktopCli(ProgressBar pb, Integer idUser) throws UnknownHostException, InterruptedException {
         looca = new Looca();
@@ -64,7 +64,7 @@ public class DesktopCli {
         hostname = InetAddress.getLocalHost().getHostName();
         maquinaDao = new MaquinaDao();
         maquina = (Maquina) maquinaDao.findOne(hostname);
-        slack = new SlackWebhook();
+        //slack = new SlackWebhook();
         this.idUser = idUser;
 
         getHardware(pb);
