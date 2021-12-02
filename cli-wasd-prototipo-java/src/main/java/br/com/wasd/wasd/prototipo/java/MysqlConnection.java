@@ -11,7 +11,7 @@ public class MysqlConnection {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://mysql:3306/wasd?autoReconnect=true&useSSL=false&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true");
         dataSource.setUsername("root");
-        dataSource.setPassword("urubu100");
+        dataSource.setPassword("my");
     }
 
     public BasicDataSource getDataSource() {
