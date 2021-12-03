@@ -102,6 +102,11 @@ INSERT INTO usuario (
     VALUES  (1, 'Bia Vediner', 'admin@gmail.com', 'teste', 1, '/img/teste'
 );
 
+INSERT INTO usuario ( 
+	fk_empresa, nome, email, senha, nivelAcesso, avatar, criado, atualizado) 
+	VALUES (1, 'Wes', 'admin2@gmail.com', '$2a$08$zSOlrhOmpvqF81o8qGSp7.BWLnjoG4larCQyuNi3Wu6tM5e21ZG.K', 1, 'fotodahora.png', now(), now()
+); 
+
 INSERT INTO setor (
     fk_usuario, jogo, avatar_jogo) 
     VALUES  (1, 'lol', 'imagemboladona.png'
