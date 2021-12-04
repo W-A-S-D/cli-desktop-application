@@ -1,0 +1,32 @@
+      2021-12-03 20:55:57
+ ------------------------------ 
+Sistemas Teste: Sistema operacional: Windows
+Fabricante: Microsoft
+Arquitetura: 64 bits.
+Inicializado: 2021-12-03T12:13:13Z
+Tempo de atividade: 0 days, 11:56:27
+Permissões:
+Executando como usuário padrão
+
+Memoria
+Em uso: 13.5 GiB
+Disponível: 18.3 GiB
+Total: 31.8 GiB
+
+Processador: Fabricante: GenuineIntel
+Nome: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+Id: BFEBFBFF000906EA
+Identificador: Intel64 Family 6 Model 158 Stepping 10
+Microarquitetura: Coffee Lake
+Frequência: 2208000000
+Número de Pacotes Físicos: 1
+Número de CPUs Fisícas: 6
+Número de CPUs Lógicas: 12
+Em Uso: 18.6
+
+HostName: DESKTOP-C71JAHS
+
+Máquina: br.com.wasd.wasd.prototipo.java.model.Maquina@53ef5357
+
+
+ ------------------------------ 

@@ -1,11 +1,14 @@
 package br.com.wasd.wasd.prototipo.java;
 
-import br.com.wasd.wasd.prototipo.java.enums.TemperaturaAlerta;
+import br.com.wasd.wasd.prototipo.java.enums.Alerta;
+import br.com.wasd.wasd.prototipo.java.log.LogDesktop;
+import br.com.wasd.wasd.prototipo.java.log.LogHardware;
 import br.com.wasd.wasd.prototipo.java.model.dao.LogDao;
 import br.com.wasd.wasd.prototipo.java.model.DiscoMaquina;
 import br.com.wasd.wasd.prototipo.java.model.Log;
 import br.com.wasd.wasd.prototipo.java.model.LogDisco;
 import br.com.wasd.wasd.prototipo.java.model.Maquina;
+import br.com.wasd.wasd.prototipo.java.model.Processos;
 import br.com.wasd.wasd.prototipo.java.model.Setor;
 import br.com.wasd.wasd.prototipo.java.model.dao.DiscoDao;
 import br.com.wasd.wasd.prototipo.java.model.dao.LogDiscoDAO;
@@ -30,6 +33,7 @@ import com.profesorfalken.jsensors.model.sensors.Temperature;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -51,7 +55,9 @@ public class DesktopCli {
     private String hostname;
     private Integer idUser;
     MaquinaDao maquinaDao;
-    //private SlackWebhook slack;
+    LogDesktop logDesktop = new LogDesktop();
+    LogHardware logHardware = new LogHardware();
+    private SlackWebhook slack;
 
     public DesktopCli(ProgressBar pb, Integer idUser) throws UnknownHostException, InterruptedException {
         looca = new Looca();
@@ -64,7 +70,7 @@ public class DesktopCli {
         hostname = InetAddress.getLocalHost().getHostName();
         maquinaDao = new MaquinaDao();
         maquina = (Maquina) maquinaDao.findOne(hostname);
-        //slack = new SlackWebhook();
+        slack = new SlackWebhook();
         this.idUser = idUser;
 
         getHardware(pb);
@@ -73,25 +79,30 @@ public class DesktopCli {
         new Timer().scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 try {
+                    logHardware.salvandoLog("Sistemas Teste: " + sistema + "\n\n"
+                            + memoria + "\n\n"
+                            + "Processador: " + processador + "\n"
+                            + "HostName: " + hostname + "\n\n"
+                            + "Máquina: " + maquina + "\n\n");
                     getHardwareUse();
                 } catch (InterruptedException ex) {
+                    logDesktop.salvandoLog("Captura de dados interrompida");
                     //Logger.getLogger(Desktop.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }, 0, 30000);
 
-//        new Timer().scheduleAtFixedRate(new TimerTask() {
-//            public void run() {
-//                getProccess();
-//            }
-//        }, 0, 120000);
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                getProccess();
+            }
+        }, 0, 120000);
     }
 
     public void getHardware(ProgressBar pb) throws UnknownHostException {
-        pb.setExtraMessage("Coletando dados:");
+        pb.setExtraMessage("Componentes:");
         pb.stepTo(50); // step directly to n
 
-        System.out.println("Componentes da Máquina:");
         DiscoDao discoDao = new DiscoDao();
         List<Disco> disco = grupoDeDiscos.getDiscos();
         List<Gpu> gpus = componentes.gpus;
@@ -126,16 +137,16 @@ public class DesktopCli {
                         gpuNome, "pendente");
                 Integer insertedMachine = maquinaDao.keyInsert(maquina);
                 maquina.setMaquina_id(insertedMachine);
+                slack.sendMessageToSlackHostnameURL(hostname + " Maquina Cadastrada!!!");  // SLACK AQUI !
 
                 for (Disco d : disco) {
                     DiscoMaquina discoMaquina = new DiscoMaquina(insertedMachine, d.getNome(),
                             ConversorDouble.formatarBytes(d.getTamanho()));
                     discoDao.insert(discoMaquina);
                 }
-                // slack.sendMessageToSlackHostnameURL(hostname + " Maquina Cadastrada!!!");  // SLACK AQUI !
 
             } else {
-                // log
+                logDesktop.salvandoLog("Setor não encontrado");
                 System.out.println("Setor não encontrado para inserir maquina!");
             }
 
@@ -159,20 +170,18 @@ public class DesktopCli {
         if (gpus != null) {
             for (final Gpu gpu : gpus) {
                 if (gpu.sensors != null) {
-                    System.out.println("Sensors: ");
                     // Print temperatures
                     List<Temperature> temps = gpu.sensors.temperatures;
                     for (final Temperature temp : temps) {
                         System.out.println("Temperatura gpu: " + temp.name + ": " + temp.value + " C");
                         temperaturaGpu = temp.value;
                         if (temp.value > 80) {
-                            //slack.sendMessageToSlackAlertaURL("Alerta!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                            slack.sendMessageToSlackAlertaURL("Alerta!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
                         } else if (temp.value > 55) {
-                            //slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
+                            slack.sendMessageToSlackAlertaURL("Atenção!! Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI !
                         } else {
                             //slack.sendMessageToSlackAlertaURL("Normal Temperatura do " + hostname + ": " + temp.value + " C");  // SLACK AQUI talvez n precise desse 
                         }
-                        //lblTempGpu.setText(temp.value + " C");
                     }
                 }
             }
@@ -181,24 +190,20 @@ public class DesktopCli {
         for (Volume volume : discoVolume) {
             usoDisco = volume.getDisponivel();
             System.out.println("Volume do disco: " + Conversor.formatarBytes(volume.getDisponivel()));
-            //lblDisco.setText(Conversor.formatarBytes(volume.getDisponivel()));
         }
 
         // UPDATE DO STATUS
-        String status;
-        status = TemperaturaAlerta.fromTemperatura(temperaturaGpu);
-
         System.out.println("Uso da memoria: " + (Conversor.formatarBytes(usoRam)));
         System.out.println("Memoria: Disponivel: " + (Conversor.formatarBytes(memoria.getDisponivel())));
         System.out.println("Uso do CPU: " + (usoCpu.toString()));
 
-//        lblUsoMemoria.setText(Conversor.formatarBytes(usoRam));;
-//        lblMemoriaDisponivel.setText(Conversor.formatarBytes(memoria.getDisponivel()));
-//        lblCpu.setText(usoCpu.toString());
         if (maquina != null) {
+            HashMap<String, Object> hardwareInfo = new HashMap<>();
+
             Log log = new Log(maquina.getMaquina_id(), usoCpu, ConversorDouble.formatarBytes(usoRam),
                     ConversorDouble.formatarBytes(usoDisco), temperaturaGpu);
             Integer insertedLog = logDao.keyInsert(log);
+            System.out.println("");
             System.out.println("log id: " + insertedLog);
 
             DiscoDao discoDao = new DiscoDao();
@@ -208,36 +213,50 @@ public class DesktopCli {
             if (discos != null) {
                 for (int i = 0; i < discos.size(); i++) {
                     usoDisco = discoVolume.get(i).getDisponivel();
-                    System.out.println("Volume Disco disponivel: " + Conversor.formatarBytes(discoVolume.get(i).getDisponivel()));
-                    //lblDisco.setText(Conversor.formatarBytes(discoVolume.get(i).getDisponivel()));
 
-                    LogDisco logDisco = new LogDisco(insertedLog, discos.get(i).getDisco_id(), ConversorDouble.formatarBytes(discoVolume.get(i).getDisponivel()));
+                    Long emUsoDisco = discoVolume.get(i).getTotal() - discoVolume.get(i).getDisponivel();
+
+                    hardwareInfo.put("usoDisco" + (i + 1),
+                            ConversorDouble.formatarBytes(
+                                    ((emUsoDisco * 100) / discoVolume.get(i).getTotal())));
+
+                    LogDisco logDisco = new LogDisco(insertedLog, discos.get(i).getDisco_id(),
+                            ConversorDouble.formatarBytes(emUsoDisco));
                     logDiscoDao.insert(logDisco);
+                    System.out.println("Uso disco: " + (Conversor.formatarBytes(usoDisco)));
                 }
             }
+
+            hardwareInfo.put("usoRam",
+                    ConversorDouble.formatarBytes(((usoRam * 100) / maquina.getRam().longValue())));
+
+            hardwareInfo.put("usoCpu", log.getFreq_cpu());
+
+            hardwareInfo.put("temperatura", log.getTemperatura());
+
+            String status = Alerta.fromLog(hardwareInfo);
+            maquina.setStatus(status);
+            maquinaDao.update(maquina);
+
         } else {
-            // log
+            logDesktop.salvandoLog("Máquina não encontrada");
         }
     }
 
-//    public void getProccess() {
-//        List<Processo> processos = grupoDeProcessos.getProcessos();
-//        DecimalFormat saida = new DecimalFormat("0.00");
-//        ProcessosDao processosDao = new ProcessosDao();
-//
-//        DefaultTableModel model = (DefaultTableModel) tbProcessos.getModel();
-//
-//        processos.forEach(processo -> {
-//
-//            if (processosDao.findOne(processo.getNome()) != null) {
-//                processosDao.update(processo);
-//            } else {
-//                processosDao.insert(processo);
-//            }
-//
-//            Object[] processosAtuais = {processo.getNome(), saida.format(processo.getUsoCpu()),
-//                saida.format(processo.getUsoMemoria())};
-//            model.addRow(processosAtuais);
-//        });
-//    }
+    public void getProccess() {
+        List<Processo> processos = grupoDeProcessos.getProcessos();
+        DecimalFormat saida = new DecimalFormat("0.00");
+        ProcessosDao processosDao = new ProcessosDao();
+
+        processos.forEach(processo -> {
+            Processos newProcesso = new Processos(maquina.getMaquina_id(), processo.getNome(), processo.getUsoCpu(),
+                    processo.getUsoMemoria());
+
+            if (processosDao.findOne(newProcesso.getNome(), newProcesso.getFk_maquina()) != null) {
+                processosDao.update(newProcesso);
+            } else {
+                processosDao.insert(newProcesso);
+            }
+        });
+    }
 }

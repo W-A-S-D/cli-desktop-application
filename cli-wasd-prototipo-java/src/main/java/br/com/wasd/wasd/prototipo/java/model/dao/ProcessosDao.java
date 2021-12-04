@@ -7,8 +7,8 @@ package br.com.wasd.wasd.prototipo.java.model.dao;
 
 import br.com.wasd.wasd.prototipo.java.Connection;
 import br.com.wasd.wasd.prototipo.java.mapper.ProcessosMapper;
-//import br.com.wasd.wasd.prototipo.java.model.Processos;
-import com.github.britooo.looca.api.group.processos.Processo;
+import br.com.wasd.wasd.prototipo.java.model.Processos;
+// import com.github.britooo.looca.api.group.processos.Processo;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,7 +34,7 @@ public class ProcessosDao extends DAOConnection implements DAO {
 
     @Override
     public Object findOne(String param) {
-        String sql = "select * from processo where nome = ? and fk_maquina = 3";
+        String sql = "select * from processo where nome = ? and fk_maquina = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{param}, new ProcessosMapper());
         } catch (EmptyResultDataAccessException e) {
@@ -42,13 +42,20 @@ public class ProcessosDao extends DAOConnection implements DAO {
         }
     }
 
+    public Object findOne(String param, Integer param2) {
+        String sql = "select * from processo where nome = ? and fk_maquina = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{param, param2}, new ProcessosMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
     @Override
     public void insert(Object object) {
-        String sql = "insert into processo(fk_maquina, nome, usoCpu, usoMemoria) values (3, ?, ?, ?)";
-        Processo processo = (Processo) object;
-        jdbcTemplate.update(sql, processo.getNome(), processo.getUsoCpu(), processo.getUsoMemoria());
-
-        System.out.println("Processos inserido com sucesso!");
+        String sql = "insert into processo(fk_maquina, nome, usoCpu, usoMemoria) values (?, ?, ?, ?)";
+        Processos processo = (Processos) object;
+        jdbcTemplate.update(sql, processo.getFk_maquina() ,processo.getNome(), processo.getUsoCpu(), processo.getUsoMemoria());
     }
 
     @Override
@@ -64,9 +71,9 @@ public class ProcessosDao extends DAOConnection implements DAO {
             Logger.getLogger(ProcessosDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         java.sql.Timestamp sqlDate = new java.sql.Timestamp(date.getTime());
-        String sql = "UPDATE processo SET usoCpu = ?, usoMemoria = ?, atualizado = ? WHERE nome = ? AND fk_maquina = 3;";
-        Processo processo = (Processo) object;
-        jdbcTemplate.update(sql, processo.getUsoCpu(), processo.getUsoMemoria(), sqlDate ,processo.getNome());
+        String sql = "UPDATE processo SET usoCpu = ?, usoMemoria = ?, atualizado = ? WHERE nome = ? AND fk_maquina = ?;";
+        Processos processo = (Processos) object;
+        jdbcTemplate.update(sql, processo.getUsoCpu(), processo.getUsoMemoria(), sqlDate ,processo.getNome(), processo.getFk_maquina());
 
     }
 

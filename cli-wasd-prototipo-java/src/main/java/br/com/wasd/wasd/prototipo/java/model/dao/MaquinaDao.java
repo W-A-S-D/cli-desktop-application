@@ -23,7 +23,7 @@ import br.com.wasd.wasd.prototipo.java.mapper.MaquinaMapper;
  * @author bianc
  */
 public class MaquinaDao extends DAOConnection implements DAO {
-    
+
     @Override
     public List findAll() {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -31,9 +31,9 @@ public class MaquinaDao extends DAOConnection implements DAO {
 
     @Override
     public Object findOne(String param) {
-          String sql = "select * from maquina where nome = ?";
+        String sql = "select * from maquina where nome = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new Object[]{param}, new MaquinaMapper());
+            return jdbcTemplate.queryForObject(sql, new Object[] { param }, new MaquinaMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -41,18 +41,19 @@ public class MaquinaDao extends DAOConnection implements DAO {
 
     @Override
     public void insert(Object object) {
-       String sql = "insert into maquina(fk_setor, nome, so, cpu, ram, gpu, status) "
+        String sql = "insert into maquina(fk_setor, nome, so, cpu, ram, gpu, status) "
                 + "values (?, ?, ?, ?, ?, ?, ?)";
-       Maquina maquina = (Maquina)object;
+        Maquina maquina = (Maquina) object;
 
-       jdbcTemplate.update(sql, maquina.getFk_setor() ,maquina.getNome(), maquina.getSo(), maquina.getCpu(), maquina.getRam(), maquina.getGpu(), maquina.getStatus());
+        jdbcTemplate.update(sql, maquina.getFk_setor(), maquina.getNome(), maquina.getSo(), maquina.getCpu(),
+                maquina.getRam(), maquina.getGpu(), maquina.getStatus());
 
-       System.out.println("Maquina inserido com sucesso!");
+        System.out.println("Maquina inserido com sucesso!");
     }
 
     public int keyInsert(Object object) {
         String sql = "insert into maquina(fk_setor, nome, so, cpu, ram, gpu, status) "
-        + "values (?, ?, ?, ?, ?, ?, ?)";
+                + "values (?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         Maquina maquina = (Maquina) object;
@@ -60,7 +61,7 @@ public class MaquinaDao extends DAOConnection implements DAO {
             jdbcTemplate.update(new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                    PreparedStatement insertLog = con.prepareStatement(sql, new String[]{"maquina_id"});
+                    PreparedStatement insertLog = con.prepareStatement(sql, new String[] { "maquina_id" });
                     insertLog.setInt(1, maquina.getFk_setor());
                     insertLog.setString(2, maquina.getNome());
                     insertLog.setString(3, maquina.getSo());
@@ -68,11 +69,11 @@ public class MaquinaDao extends DAOConnection implements DAO {
                     insertLog.setDouble(5, maquina.getRam());
                     insertLog.setString(6, maquina.getCpu());
                     insertLog.setString(7, maquina.getStatus());
-    
+
                     return insertLog;
                 }
             }, keyHolder);
-    
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -82,7 +83,14 @@ public class MaquinaDao extends DAOConnection implements DAO {
 
     @Override
     public void update(Object object) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Maquina maquina = (Maquina) object;
+        try {
+            jdbcTemplate.update("update maquina set status = ? where maquina_id = ?",
+                    maquina.getStatus(),
+                    maquina.getMaquina_id());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override

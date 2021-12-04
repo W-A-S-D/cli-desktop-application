@@ -10,7 +10,19 @@ public class Processos {
     private String iniciado;
     private String atualizado;
 
+    public Processos(Integer fk_maquina, String nome, Double usoCpu, Double usoMemoria) {
+        this.fk_maquina = fk_maquina;
+        this.nome = nome;
+        this.usoCpu = usoCpu;
+        this.usoMemoria = usoMemoria;
+        this.iniciado = iniciado;
+        this.atualizado = atualizado;
+    }
+
+    public Processos() {
+    }
     
+
     public Double getUsoCpu() {
         return usoCpu;
     }
@@ -35,7 +47,6 @@ public class Processos {
         this.atualizado = atualizado;
     }
 
-    
     public Integer getProcessos_id() {
         return processos_id;
     }
@@ -67,6 +78,5 @@ public class Processos {
     public void setIniciado(String iniciado) {
         this.iniciado = iniciado;
     }
-
 
 }

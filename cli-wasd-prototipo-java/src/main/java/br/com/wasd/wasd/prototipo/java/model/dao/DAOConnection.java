@@ -17,4 +17,5 @@ public class DAOConnection {
     
     protected MysqlConnection config = new MysqlConnection();
     protected JdbcTemplate jdbcTemplate = new JdbcTemplate(config.getDataSource());
+
 }
