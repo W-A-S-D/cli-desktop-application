@@ -67,7 +67,7 @@ public class MaquinaDao extends DAOConnection implements DAO {
                     insertLog.setString(3, maquina.getSo());
                     insertLog.setString(4, maquina.getCpu());
                     insertLog.setDouble(5, maquina.getRam());
-                    insertLog.setString(6, maquina.getCpu());
+                    insertLog.setString(6, maquina.getGpu());
                     insertLog.setString(7, maquina.getStatus());
 
                     return insertLog;
